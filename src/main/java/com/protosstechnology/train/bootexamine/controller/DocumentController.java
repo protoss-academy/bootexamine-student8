@@ -1,5 +1,7 @@
 package com.protosstechnology.train.bootexamine.controller;
 
+import com.protosstechnology.train.bootexamine.document.CreateRequest;
+import com.protosstechnology.train.bootexamine.document.UpdateRequest;
 import com.protosstechnology.train.bootexamine.models.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +26,7 @@ public class DocumentController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Document> updateDocument(
-            @RequestBody Document request
+            @RequestBody UpdateRequest request
     ) {
         Document result = documentService.updateDocument(request);
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -35,7 +37,7 @@ public class DocumentController {
             @PathVariable("id") Integer id
     ) {
         Boolean result = documentService.deleteDocument(id);
-        if (result){
+        if (Boolean.TRUE.equals(result)){
             return new ResponseEntity<>("Delete Success", HttpStatus.OK);
         }
         return new ResponseEntity<>("Delete Fail", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -43,9 +45,9 @@ public class DocumentController {
 
     @PostMapping
     public ResponseEntity<Document> createDocument(
-            @RequestBody Document document
+            @RequestBody CreateRequest request
     ) {
-        Document result = documentService.createDocument(document);
+        Document result = documentService.createDocument(request);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
