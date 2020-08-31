@@ -13,12 +13,47 @@ public class DocumentService {
     @Autowired
     DocumentRepository documentRepository;
 
-    public Document getDocument(String id) {
-        Optional<Document> byId = documentRepository.findById(Integer.valueOf(id));
+    public Document getDocument(Integer id) {
+        Optional<Document> byId = documentRepository.findById(id);
         if (byId.isPresent()) {
             return byId.get();
         }
         else {
+            return null;
+        }
+    }
+
+    public Document updateDocument(Document request) {
+        Optional<Document> byId = documentRepository.findById(request.getId());
+        if (byId.isPresent()) {
+            Document documentUpdate = byId.get();
+            documentUpdate.setDocumentNumber(request.getDocumentNumber());
+            documentUpdate.setDescription(request.getDescription());
+            documentUpdate = documentRepository.save(documentUpdate);
+            return documentUpdate;
+        }
+        else {
+            return null;
+        }
+    }
+
+    public Boolean deleteDocument(Integer id) {
+        Optional<Document> byId = documentRepository.findById(id);
+        if (byId.isPresent()) {
+            documentRepository.deleteById(id);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public Document createDocument(Document document) {
+        try {
+            Document save = documentRepository.save(document);
+            return save;
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
